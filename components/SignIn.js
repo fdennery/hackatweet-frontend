@@ -22,7 +22,6 @@ function SignIn() {
     })
     .then(response => response.json())
     .then(data => {
-      console.log(data)
       if (data.result){
       dispatch(login({token: data.token, username:signInUsername}))
       router.push('/')

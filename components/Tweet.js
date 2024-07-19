@@ -8,11 +8,9 @@ import { useSelector } from 'react-redux'
 function Tweet(props) {
 
     const user = useSelector((state) => state.user.value)
-    console.log(user)
-   /* if(!user.token) {
-        window.location.assign('http://localhost:3001')}*/
 
     let heartIconStyle;
+    let trashIconStyle;
 
     const formatHashtag = (text) => {
         const words = text.split(' ');
@@ -38,6 +36,10 @@ function Tweet(props) {
     if (props.isLiked)
         {heartIconStyle = {'color' : 'red'}}
 
+    if (!props.isDeletable){
+        trashIconStyle = {'display': 'none'}
+    }
+
 
     return (
 
@@ -51,7 +53,7 @@ function Tweet(props) {
     <div className={styles.tweetLabel}>{formatHashtag(props.label)} </div>
     <div className={styles.iconSection}>
     <FontAwesomeIcon onClick={() => handleLikeClick(props._id, user)} icon={faHeart} style={heartIconStyle} className={styles.icon} />
-    <FontAwesomeIcon onClick={() => handleDeleteClick(props._id)} icon={faTrash}  className={styles.icon} />
+    <FontAwesomeIcon onClick={() => handleDeleteClick(props._id)} icon={faTrash}  className={styles.icon} style={trashIconStyle} />
     </div>
 </div>
 

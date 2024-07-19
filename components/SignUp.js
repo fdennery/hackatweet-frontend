@@ -18,19 +18,14 @@ function SignUp() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ firstname: signUpFirstname, username: signUpUsername, password: signUpPassword })
-    }
-    .then(response => response.json())
-    .then(data => {
-      console.log(data)
-      if ( data.result) {
+    }).then(response => response.json())
+      .then(data => {
+      if (data.result) {
       dispatch(login({token: data.token, username:signUpUsername}))
-      setSignUpFirstname('');
-      setSignUpUsername('');
-      setSignUpPassword('');
       router.push('/')
       }
 })
-    )}
+    }
 
   return (
     <div className={styles.registerSection}>

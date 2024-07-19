@@ -1,0 +1,33 @@
+.trendsContainer{
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 20vw;
+    height: 100vh;
+}
+
+
+.trend {
+    display: flex;
+    background-color: rgb(30, 28, 28);
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    border: gray 1px solid;
+    width: 15vw;
+    height: 8vh;
+}
+
+.hashtag{
+    height: 1vh;
+    margin-top: 10px;
+    color: #1A8CD8
+}
+
+.tweetCount{
+margin-top: 5px;
+color: gray;
+height: 1vh;
+
+}
