@@ -7,41 +7,38 @@ import LastTweets from './LastTweets'
 import Trends from './Trends'
 import { useRouter } from 'next/router'
 import { logout } from '../reducers/user';
+import Link from 'next/link'
 
+function Hashtags (props) {
 
-function Home() {
+  console.log(props)
 
-  const [newTweet, setNewTweet] = useState('')
-  const [tweetsData, setTweetsData] = useState([]);
-  const [trendsData, setTrendsData] = useState([]);
-  const user = useSelector((state) => state.user.value)
-  const [userData, setUserData] = useState([])
+    const [newTweet, setNewTweet] = useState('')
+    const [tweetsData, setTweetsData] = useState([]);
+    const [trendsData, setTrendsData] = useState([]);
+    const user = useSelector((state) => state.user.value)
+    const [userData, setUserData] = useState([])
+    const [searchHashtag, setSearchHashtag] = useState(props.hashtag)
+  
+  
+    const dispatch = useDispatch()
+  
+    const router = useRouter();
+  
+  
+  
+    // Redirection vers login si non loggué
+  
+            useEffect(() => {
+                if (!user.token) {
+                router.push('/login');
+                }
+            }, [user ,router]);
 
+ // Récupération des tweets par hashtag
 
-  const dispatch = useDispatch()
-
-  const router = useRouter();
-
-
-  let error;
-  let disableTweet = true
-  let carCountStyle
-
-   // Redirection vers login si non loggué
-
-useEffect(() => {
-  if (!user.token) {
-    router.push('/login');
-  }
-}, [user ,router]);
-
-
-
- // Récupération des tweets
-
-
-  useEffect(() => {
-    fetch('http://localhost:3000/tweets')
+ useEffect(() => {
+    fetch(`http://localhost:3000/tweets/byHashtag/${searchHashtag}`)
       .then(response => response.json())
       .then(apiData => {
         setTweetsData(apiData.tweets)
@@ -63,34 +60,9 @@ useEffect(() => {
 
 
 
-  // Nouveau tweet 
+  // Search tweet by hashtags
 
 
-  const handleNewTweet = () => {
-    fetch('http://localhost:3000/tweets', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ creator: userData._id, tweet: newTweet })
-    }).then(response => response.json())
-      .then(apiResponse => {
-        if (apiResponse.result) {
-          setNewTweet('')
-          fetch('http://localhost:3000/tweets')
-            .then(response => response.json())
-            .then(apiData => {
-              setTweetsData(apiData.tweets)
-            })
-            fetch('http://localhost:3000/tweets/trends')
-            .then(response => response.json())
-             .then(apiData => {
-              setTrendsData(apiData.trends)
-              })
-
-        } else {
-          error = apiResponse.error
-        }
-      })
-  }
 
 
   // Aimer tweet 
@@ -154,28 +126,22 @@ useEffect(() => {
     dispatch(logout())
   }
 
-if (newTweet.length > 0 && newTweet.length <281)
-    {disableTweet = false}
-
-if (newTweet.length === 0) {
-  carCountStyle = {'color': 'grey'}
-} else if (newTweet.length > 280) {
-  carCountStyle = {'color': 'red'}
-}
+  const handleLogoClick =  () => {
+    router.push ('/')
+  }
 
 
-
-  return (
+return (
 
     <div className={styles.content}>
 
       <Head>
-        <title> Hackatweet - Home</title>
+        <title> Hackatweet - Hashtags</title>
       </Head>
 
       <div className={styles.leftContainer}>
-        <div className={styles.logo}>
-        <Image src='/twitter.png' alt="logo"  height={256} width={256} />
+        <div className={styles.logo}> 
+        <Image src='/twitter.png' alt="logo"  height={256} width={256} onClick={() => handleLogoClick  ()}  />
         </div>
      
         <div className={styles.logoutContainer}>
@@ -187,9 +153,8 @@ if (newTweet.length === 0) {
       <div className={styles.centerContainer}>
         <h2> Home</h2>
         <div className={styles.newTweet}>
-          <input className={styles.inputHome} type="text" placeholder='Write Something...' value={newTweet} onChange={(e) => setNewTweet(e.target.value)} />
-          <span className={styles.carCount} style={carCountStyle}>{newTweet.length}/280</span>
-          <button className={styles.buttonHome} disabled={disableTweet} onClick={() => handleNewTweet()}>Tweet</button>
+          <input className={styles.inputHome} type="text" placeholder='Search hashtag...' value={newTweet} onChange={(e) => setNewTweet(e.target.value)} />
+          <button className={styles.buttonHome} onClick={() => handleSearch()}>Searh</button>
         </div>
 
         <LastTweets tweets={tweetsData} deleteTweet={deleteTweet} likeTweet={likeTweet} />
@@ -206,4 +171,4 @@ if (newTweet.length === 0) {
   );
 }
 
-export default Home;
+export default Hashtags;

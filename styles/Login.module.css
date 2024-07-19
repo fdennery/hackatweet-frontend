@@ -39,13 +39,12 @@
     border: 1px solid #cccccc;
     border-radius: 5px;
     box-sizing: border-box;
-    background-color: var(--input-bg-light);
-    color: var(--text-color-light);
+    color: white;
   }
   
   .authInput-dark {
     background-color: var(--input-bg-dark);
-    color: var(--text-color-dark);
+    color: white;
   }
   
   .authButton {

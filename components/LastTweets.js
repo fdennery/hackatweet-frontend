@@ -11,9 +11,6 @@ const user = useSelector((state) => state.user.value)
 const [userData, setUserData] = useState([])
 const router = useRouter()
 
-console.log('user', userData)
-console.log('tweets', props)
-
 useEffect(() => {
     if (!user.token) {
       router.push('/login');
@@ -40,7 +37,7 @@ const likeTweet = (tweetId, creatorId) => {
 const tweets = props.tweets.map((e,i) => {
     const isLiked =  e.liked_by.some(u => u.toString()  ===  userData._id.toString())
     let isDeletable = e.creator._id === userData._id;
-    return  <Tweet key={i} _id={e._id} creatorName={e.creator.username}  label={e.label} isLiked={isLiked} isDeletable={isDeletable} deleteTweet={deleteTweet} likeTweet={likeTweet}/>
+    return  <Tweet key={i} _id={e._id} creatorName={e.creator.username}  label={e.label} likedBy={e.liked_by} creationDate={e.creation_date} isLiked={isLiked} isDeletable={isDeletable} deleteTweet={deleteTweet} likeTweet={likeTweet}/>
     
 })
 

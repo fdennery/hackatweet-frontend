@@ -5,6 +5,7 @@ import styles from '../styles/Login.module.css';
 import { useRouter } from 'next/router';
 import SignIn from './SignIn'
 import SignUp from './SignUp'
+import Head from 'next/head';
 
 function Login() {
 
@@ -25,6 +26,7 @@ const user = useSelector((state) => state.user.value)
 
   return (
     <div className={styles.registerContainer}>
+      <Head> <title>Hackatweet - Login</title>  </Head>
          
          <SignUp/>
      

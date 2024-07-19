@@ -1,13 +1,18 @@
 import styles from '../styles/Trends.module.css'
+import { useRouter } from 'next/router'
 
 
 function Trends(props) {
 
-  console.log(props)
+const router = useRouter();
+console.log(props)
 
+const handleTrendClick = (hashtag) => {
+    router.push(`/hashtags/${hashtag}`)
+}
 
     const trends = props.trends.map((e,i) => {
-        return <span className={styles.trend}> <p className={styles.hashtag}>{e._id}</p><p className={styles.tweetCount}>{e.count} Tweets</p></span>
+        return <span className={styles.trend} onClick={() => handleTrendClick (e._id.substring(1))}> <p className={styles.hashtag}>{e._id}</p><p className={styles.tweetCount}>{e.count} Tweets</p></span>
 
     })
 

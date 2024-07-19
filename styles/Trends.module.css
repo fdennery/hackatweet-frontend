@@ -17,7 +17,13 @@
     border: gray 1px solid;
     width: 15vw;
     height: 8vh;
+    cursor: pointer;
 }
+
+
+.trend:hover {
+    opacity: 0.7;
+  }
 
 .hashtag{
     height: 1vh;

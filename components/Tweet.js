@@ -1,13 +1,15 @@
 import styles from '../styles/Tweet.module.css'
-import Image from "next/Image"
+import Image from "next/image"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { useSelector } from 'react-redux'
+import moment from 'moment'
 
 
 function Tweet(props) {
 
     const user = useSelector((state) => state.user.value)
+    console.log(props, 'tweets')
 
     let heartIconStyle;
     let trashIconStyle;
@@ -23,6 +25,8 @@ function Tweet(props) {
 
         return formattedText
     }
+
+    let dateFromNow = moment(props.creationDate).fromNow()
 
     const handleDeleteClick = (tweetId) => {
         props.deleteTweet(tweetId)
@@ -48,11 +52,12 @@ function Tweet(props) {
 <div className={styles.topSection}>
     <Image src="/egg.jpg" className={styles.profilePicture} alt="profile-picture" width={40} height={40}></Image>
     <p className={styles.userName}>{props.creatorName}</p>
-    <p className={styles.creationDate}> 5 hours ago </p>
+    <p className={styles.creationDate}> {dateFromNow} </p>
     </div>
     <div className={styles.tweetLabel}>{formatHashtag(props.label)} </div>
     <div className={styles.iconSection}>
     <FontAwesomeIcon onClick={() => handleLikeClick(props._id, user)} icon={faHeart} style={heartIconStyle} className={styles.icon} />
+    <span className={styles.likedCount}>{props.likedBy.length}</span>
     <FontAwesomeIcon onClick={() => handleDeleteClick(props._id)} icon={faTrash}  className={styles.icon} style={trashIconStyle} />
     </div>
 </div>

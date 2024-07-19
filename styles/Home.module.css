@@ -24,29 +24,30 @@
 .logo {
 width: 128px;
 height: auto;
+cursor: pointer;
 
 }
 
 
 .content {
-
   display: flex;
   flex-direction: row;
   width: 100vw;
-  height: 100vh;
+  height: 90vh;
   justify-content: space-around;
   align-items: top;
-  margin-top: 10px;
  
 }
 
 
 .leftContainer{
+  margin-top: 5px;
+  margin-bottom: 5px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 20vw;
-  height: 100vh;
+  height: 95vh;
 
 }
 
@@ -125,5 +126,6 @@ height: auto;
 .logoutContainer {
   display: flex;
   flex-direction: column;
+  margin-left: 10px;
   justify-content: space-around;
 }
