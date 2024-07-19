@@ -1,0 +1,31 @@
+.registerContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .registerSection {
+    margin: 20px;
+    text-align: center;
+  }
+  
+  .registerSection input {
+    display: block;
+    margin: 10px 0;
+    padding: 10px;
+    width: 100%;
+  }
+  
+  .registerSection button {
+    margin: 10px 0;
+    padding: 10px 20px;
+    border: none;
+    background-color: #1DA1F2;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .registerSection button#connection {
+    background-color: #657786;
+  }

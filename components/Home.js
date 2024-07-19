@@ -16,7 +16,11 @@ function Home() {
 
   let error;
   const user = useSelector((state) => state.user.value)
+  const [userData, setUserData] = useState([])
   const router = useRouter();
+
+  console.log(userData)
+
 
 
   useEffect(() => {
@@ -27,13 +31,26 @@ function Home() {
       })
   }, [])
 
+  useEffect(()=> {
+    fetch(`http://localhost:3000/users/${user.username}`)
+    .then (response => response.json())
+    .then(apiData => {
+        setUserData(apiData)
+    },  )
+},[])
+
+useEffect(() => {
+  if (!user?.token) {
+    router.push('/login');
+  }
+}, [user, router]);
 
 
   const handleNewTweet = () => {
     fetch('http://localhost:3000/tweets', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ creator: user, tweet: newTweet })
+      body: JSON.stringify({ creator: userData.data._id, tweet: newTweet })
     }).then(response => response.json())
       .then(apiResponse => {
         if (apiResponse.result) {
@@ -53,7 +70,7 @@ function Home() {
     fetch('http://localhost:3000/tweets/updateLikes', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ tweetId: tweedId, likedBy: user })
+      body: JSON.stringify({ tweetId: tweedId, likedBy: userData.data._id })
     }).then(response => response.json())
       .then(apiResponse => {
         if (apiResponse.result) {
@@ -83,6 +100,8 @@ function Home() {
       })
 
   }
+
+
 
   return (
 
