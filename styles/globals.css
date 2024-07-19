@@ -16,4 +16,15 @@ h2 {
 }
 
 
+/* Variables pour les couleurs */
+:global(:root) {
+  --bg-color-light: #f0f0f0;
+  --bg-color-dark: #15202b;
+  --color-white: #ffffff;
+  --color-gray: #cccccc;
+  --color-dark: #333333;
+  --color-primary: #1DA1F2;
+  --color-primary-hover: #0d8ae8;
+  --bg-color-input: #192734;
+}
 

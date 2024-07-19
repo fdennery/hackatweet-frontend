@@ -1,31 +1,63 @@
-.registerContainer {
+  .authContainer {
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
+    height: 100vh;
+    background-color: var(--bg-color-light);
   }
   
-  .registerSection {
-    margin: 20px;
+  .authCard {
+    background-color: var(--color-white);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
+    width: 300px;
+    position: relative;
   }
   
-  .registerSection input {
+  .authTitle {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: var(--color-dark);
+  }
+  
+  .authInput {
     display: block;
-    margin: 10px 0;
-    padding: 10px;
     width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 0.5px solid white;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-top: 5px;
   }
   
-  .registerSection button {
-    margin: 10px 0;
+  .authButton {
+    background-color: white;
+    color:  #15202b;
     padding: 10px 20px;
     border: none;
-    background-color: #1DA1F2;
-    color: white;
+    border-radius: 40px;
     cursor: pointer;
-    border-radius: 5px;
+    width: 100%;
+    margin-top: 5px;
+    transition: background-color 0.3s ease;
   }
   
-  .registerSection button#connection {
-    background-color: #657786;
+  .authButton:hover {
+    background-color: var(--color-primary-hover);
+  }
+  
+  .authCard-dark {
+    background-color: var(--bg-color-dark);
+  }
+  
+  .authTitle-dark {
+    color: var(--color-white);
+  }
+  
+  .authInput-dark {
+    background-color: var(--bg-color-input);
+    color: var(--color-white);
   }
