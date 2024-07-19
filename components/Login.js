@@ -1,7 +1,13 @@
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux'
+import { login } from '../reducers/user';
 import styles from '../styles/Login.module.css'; 
 
 function Login() {
+
+const dispatch = useDispatch();
+const user = useSelector((state) => state.user.value)
+
   const [signUpFirstname, setSignUpFirstname] = useState("");
   const [signUpUsername, setSignUpUsername] = useState("");
   const [signUpPassword, setSignUpPassword] = useState("");
@@ -17,7 +23,15 @@ function Login() {
     })
     .then(response => response.json())
     .then(data => {
-      console.log(data);
+      console.log(data)
+      if ( data.result) {
+      dispatch(login({token: data.token, username:signUpUsername}))
+      setSignUpFirstname('');
+      setSignUpUsername('');
+      setSignUpPassword('');
+     
+      window.location.assign("http://localhost:3001/")
+      }
     });
   }
 
@@ -29,7 +43,14 @@ function Login() {
     })
     .then(response => response.json())
     .then(data => {
-      console.log(data);
+      console.log(data)
+      if (data.result){
+      dispatch(login({token: data.token, username:signInUsername}))
+      setSignInUsername('');
+      setSignInPassword('');
+     
+      window.location.assign("http://localhost:3001/")
+      }
     });
   }
 
