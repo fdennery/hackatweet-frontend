@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styles from '../styles/Login.module.css';
-import {useDispatch, useSelector} from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../reducers/user';
 import { useRouter } from 'next/router';
 
@@ -11,34 +11,35 @@ function SignUp() {
 
   const dispatch = useDispatch();
   const router = useRouter();
-  const user = useSelector((state) => state.user.value)
+  const user = useSelector((state) => state.user.value);
 
   const handleRegister = () => {
-    fetch("http://localhost:3000/users/signup" ,  {
+    fetch("http://localhost:3000/users/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ firstname: signUpFirstname, username: signUpUsername, password: signUpPassword })
-    }
+    })
     .then(response => response.json())
     .then(data => {
-      console.log(data)
-      if ( data.result) {
-      dispatch(login({token: data.token, username:signUpUsername}))
-      setSignUpFirstname('');
-      setSignUpUsername('');
-      setSignUpPassword('');
-      router.push('/')
+      if (data.result) {
+        dispatch(login({ token: data.token, username: signUpUsername }));
+        setSignUpFirstname('');
+        setSignUpUsername('');
+        setSignUpPassword('');
+        router.push('/');
       }
-})
-    )}
+    });
+  };
 
   return (
-    <div className={styles.registerSection}>
-      <p>Sign-up</p>
-      <input type="text" placeholder="Firstname" id="signUpFirstname" onChange={(e) => setSignUpFirstname(e.target.value)} value={signUpFirstname} />
-      <input type="text" placeholder="Username" id="signUpUsername" onChange={(e) => setSignUpUsername(e.target.value)} value={signUpUsername} />
-      <input type="password" placeholder="Password" id="signUpPassword" onChange={(e) => setSignUpPassword(e.target.value)} value={signUpPassword} />
-      <button id="register" onClick={handleRegister}>Register</button>
+    <div className={styles.authContainer}>
+      <div className={`${styles.authCard} ${styles['authCard-dark']}`}>
+        <h2 className={`${styles.authTitle} ${styles['authTitle-dark']}`}>Create your Hackatweet account</h2>
+        <input type="text" placeholder="Firstname" onChange={(e) => setSignUpFirstname(e.target.value)} value={signUpFirstname} className={`${styles.authInput} ${styles['authInput-dark']}`} />
+        <input type="text" placeholder="Username" onChange={(e) => setSignUpUsername(e.target.value)} value={signUpUsername} className={`${styles.authInput} ${styles['authInput-dark']}`} />
+        <input type="password" placeholder="Password" onChange={(e) => setSignUpPassword(e.target.value)} value={signUpPassword} className={`${styles.authInput} ${styles['authInput-dark']}`} />
+        <button onClick={handleRegister} className={styles.authButton}>Sign up</button>
+      </div>
     </div>
   );
 }
