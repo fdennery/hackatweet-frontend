@@ -19,7 +19,7 @@ useEffect(() => {
 
 
 useEffect(()=> {
-    fetch(`http://localhost:3000/users/${user.username}`)
+    fetch(`https://hackatweet-backend-nu-dun.vercel.app/users/${user.username}`)
     .then (response => response.json())
     .then(apiData => {
         setUserData(apiData.user)

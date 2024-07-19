@@ -41,7 +41,7 @@ useEffect(() => {
 
 
   useEffect(() => {
-    fetch('http://localhost:3000/tweets')
+    fetch('https://hackatweet-backend-nu-dun.vercel.app/tweets')
       .then(response => response.json())
       .then(apiData => {
         setTweetsData(apiData.tweets)
@@ -51,7 +51,7 @@ useEffect(() => {
  // Récupération du user complet
 
   useEffect(()=> {
-    fetch(`http://localhost:3000/users/${user.username}`)
+    fetch(`https://hackatweet-backend-nu-dun.vercel.app/users/${user.username}`)
     .then (response => response.json())
     .then(apiData => {
         setUserData(apiData.user)
@@ -67,7 +67,7 @@ useEffect(() => {
 
 
   const handleNewTweet = () => {
-    fetch('http://localhost:3000/tweets', {
+    fetch('https://hackatweet-backend-nu-dun.vercel.app/tweets', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ creator: userData._id, tweet: newTweet })
@@ -75,12 +75,12 @@ useEffect(() => {
       .then(apiResponse => {
         if (apiResponse.result) {
           setNewTweet('')
-          fetch('http://localhost:3000/tweets')
+          fetch('https://hackatweet-backend-nu-dun.vercel.app/tweets')
             .then(response => response.json())
             .then(apiData => {
               setTweetsData(apiData.tweets)
             })
-            fetch('http://localhost:3000/tweets/trends')
+            fetch('https://hackatweet-backend-nu-dun.vercel.app/tweets/trends')
             .then(response => response.json())
              .then(apiData => {
               setTrendsData(apiData.trends)
@@ -96,14 +96,14 @@ useEffect(() => {
   // Aimer tweet 
 
   const likeTweet = (tweedId, creatorId) => {
-    fetch('http://localhost:3000/tweets/updateLikes', {
+    fetch('https://hackatweet-backend-nu-dun.vercel.app/tweets/updateLikes', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ tweetId: tweedId, likedBy: userData._id })
     }).then(response => response.json())
       .then(apiResponse => {
         if (apiResponse.result) {
-          fetch('http://localhost:3000/tweets')
+          fetch('https://hackatweet-backend-nu-dun.vercel.app/tweets')
             .then(response => response.json())
             .then(apiData => {
               setTweetsData(apiData.tweets)
@@ -117,17 +117,17 @@ useEffect(() => {
 //  Suppresion tweet 
 
   const deleteTweet = (tweetId) => {
-    fetch(`http://localhost:3000/tweets/${tweetId}`, {
+    fetch(`https://hackatweet-backend-nu-dun.vercel.app/tweets/${tweetId}`, {
       method: 'DELETE'
     }).then(response => response.json())
       .then(apiResponse => {
         if (apiResponse.result) {
-          fetch('http://localhost:3000/tweets')
+          fetch('https://hackatweet-backend-nu-dun.vercel.app/tweets')
             .then(response => response.json())
             .then(apiData => {
               setTweetsData(apiData.tweets)
             })
-         fetch('http://localhost:3000/tweets/trends')
+         fetch('https://hackatweet-backend-nu-dun.vercel.app/tweets/trends')
           .then(response => response.json())
            .then(apiData => {
             setTrendsData(apiData.trends)
@@ -141,7 +141,7 @@ useEffect(() => {
 // Récupération des Trends 
 
  useEffect(() => {
-  fetch('http://localhost:3000/tweets/trends')
+  fetch('https://hackatweet-backend-nu-dun.vercel.app/tweets/trends')
     .then(response => response.json())
     .then(apiData => {
       setTrendsData(apiData.trends)

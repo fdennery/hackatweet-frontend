@@ -4,10 +4,11 @@ import { useRouter } from 'next/router';
 function HashtagsPage () {
 
     const router = useRouter();
-    const { hashtag } = router.query;
+    const { hashtags } = router.query;
+    console.log('query' , router.query)
 
 
-    return <Hashtags hashtag={hashtag}/>;
+    return <Hashtags hashtag={hashtags}/>;
 }
 
 export default HashtagsPage;

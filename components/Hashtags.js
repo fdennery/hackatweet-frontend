@@ -38,17 +38,17 @@ function Hashtags (props) {
  // Récupération des tweets par hashtag
 
  useEffect(() => {
-    fetch(`http://localhost:3000/tweets/byHashtag/${searchHashtag}`)
+    fetch(`https://hackatweet-backend-nu-dun.vercel.app/tweets/byHashtag/${props.hashtag}`)
       .then(response => response.json())
       .then(apiData => {
         setTweetsData(apiData.tweets)
       })
-  }, [])
+  }, [props.hastag])
 
  // Récupération du user complet
 
   useEffect(()=> {
-    fetch(`http://localhost:3000/users/${user.username}`)
+    fetch(`https://hackatweet-backend-nu-dun.vercel.app/users/${user.username}`)
     .then (response => response.json())
     .then(apiData => {
         setUserData(apiData.user)
@@ -68,14 +68,14 @@ function Hashtags (props) {
   // Aimer tweet 
 
   const likeTweet = (tweedId, creatorId) => {
-    fetch('http://localhost:3000/tweets/updateLikes', {
+    fetch('https://hackatweet-backend-nu-dun.vercel.app/tweets/updateLikes', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ tweetId: tweedId, likedBy: userData._id })
     }).then(response => response.json())
       .then(apiResponse => {
         if (apiResponse.result) {
-          fetch('http://localhost:3000/tweets')
+          fetch('https://hackatweet-backend-nu-dun.vercel.app/tweets')
             .then(response => response.json())
             .then(apiData => {
               setTweetsData(apiData.tweets)
@@ -89,17 +89,17 @@ function Hashtags (props) {
 //  Suppresion tweet 
 
   const deleteTweet = (tweetId) => {
-    fetch(`http://localhost:3000/tweets/${tweetId}`, {
+    fetch(`https://hackatweet-backend-nu-dun.vercel.app/tweets/${tweetId}`, {
       method: 'DELETE'
     }).then(response => response.json())
       .then(apiResponse => {
         if (apiResponse.result) {
-          fetch('http://localhost:3000/tweets')
+          fetch('https://hackatweet-backend-nu-dun.vercel.app/tweets')
             .then(response => response.json())
             .then(apiData => {
               setTweetsData(apiData.tweets)
             })
-         fetch('http://localhost:3000/tweets/trends')
+         fetch('https://hackatweet-backend-nu-dun.vercel.app/tweets/trends')
           .then(response => response.json())
            .then(apiData => {
             setTrendsData(apiData.trends)
@@ -113,7 +113,7 @@ function Hashtags (props) {
 // Récupération des Trends 
 
  useEffect(() => {
-  fetch('http://localhost:3000/tweets/trends')
+  fetch('https://hackatweet-backend-nu-dun.vercel.app/tweets/trends')
     .then(response => response.json())
     .then(apiData => {
       setTrendsData(apiData.trends)

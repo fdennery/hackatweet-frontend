@@ -16,7 +16,7 @@ function SignUp() {
   const user = useSelector((state) => state.user.value);
 
   const handleRegister = () => {
-    fetch("http://localhost:3000/users/signup", {
+    fetch("https://hackatweet-backend-nu-dun.vercel.app/users/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ firstname: signUpFirstname, username: signUpUsername, password: signUpPassword })
