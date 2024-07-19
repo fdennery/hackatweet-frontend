@@ -2,7 +2,7 @@ import styles from '../styles/LastTweets.module.css'
 import { useEffect, useState } from 'react';
 import Tweet from './Tweet';
 import { useSelector } from 'react-redux'
-import { Router, useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 
 function LastTweets(props) {
 

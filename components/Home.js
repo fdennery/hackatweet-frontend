@@ -30,9 +30,9 @@ function Home() {
    // Redirection vers login si non loggué
 
    useEffect(() => {
-    if (!user.token) {
+    if (!user.token || userData === undefined) {
       router.push('/login');
-      }},[router]);
+      }},[router, user, userData]);
 
 
  // Récupération des tweets

@@ -11,8 +11,6 @@ import Link from 'next/link'
 
 function Hashtags (props) {
 
-  console.log(props)
-
     const [newTweet, setNewTweet] = useState('')
     const [tweetsData, setTweetsData] = useState([]);
     const [trendsData, setTrendsData] = useState([]);
@@ -22,7 +20,6 @@ function Hashtags (props) {
   
   
     const dispatch = useDispatch()
-  
     const router = useRouter();
   
   
@@ -30,9 +27,9 @@ function Hashtags (props) {
   // Redirection vers login si non loggué
   
 useEffect(() => {
-     if (!user.token) {
+     if (!user.token || userData === undefined) {
        router.push('/login');
-       }},[router]);
+       }},[router, user, userData]);
 
  // Récupération des tweets par hashtag
 
@@ -109,7 +106,7 @@ useEffect(() => {
     })
 }, [])
 
-//  Decconexion
+//  Deconexion
 
   const handleLogout = () => {
     dispatch(logout())
@@ -140,7 +137,7 @@ return (
       </div>
 
       <div className={styles.centerContainer}>
-        <h2> Home</h2>
+        <h2> Hashtags </h2>
         <div className={styles.newTweet}>
           <input className={styles.inputHome} type="text" placeholder='Search hashtag...' value={newTweet} onChange={(e) => setNewTweet(e.target.value)} />
           <button className={styles.buttonHome} onClick={() => handleSearch()}>Searh</button>
