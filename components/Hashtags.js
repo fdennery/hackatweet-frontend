@@ -27,13 +27,12 @@ function Hashtags (props) {
   
   
   
-    // Redirection vers login si non loggué
+  // Redirection vers login si non loggué
   
-            useEffect(() => {
-                if (!user.token) {
-                router.push('/login');
-                }
-            }, [user ,router]);
+useEffect(() => {
+     if (!user.token) {
+       router.push('/login');
+       }},[router]);
 
  // Récupération des tweets par hashtag
 
@@ -54,16 +53,6 @@ function Hashtags (props) {
         setUserData(apiData.user)
     },  )
 },[])
-
-
-
-
-
-
-  // Search tweet by hashtags
-
-
-
 
   // Aimer tweet 
 
