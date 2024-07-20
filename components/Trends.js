@@ -1,11 +1,17 @@
 import styles from '../styles/Trends.module.css'
 import { useRouter } from 'next/router'
+import { useState, useEffect } from 'react';
 
 
 function Trends(props) {
 
 const router = useRouter();
 console.log(props)
+
+console.log('trends props', props)
+
+
+
 
 const handleTrendClick = (hashtag) => {
     router.push(`/hashtags/${hashtag}`)

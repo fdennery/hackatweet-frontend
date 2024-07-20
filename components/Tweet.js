@@ -61,7 +61,7 @@ function Tweet(props) {
     </div>
     <div className={styles.tweetLabel}>{formatHashtag(props.label)} </div>
     <div className={styles.iconSection}>
-    <FontAwesomeIcon onClick={() => handleLikeClick(props._id, user)} icon={faHeart} style={heartIconStyle} className={styles.icon} />
+    <FontAwesomeIcon onClick={() => handleLikeClick(props._id, user.username)} icon={faHeart} style={heartIconStyle} className={styles.icon} />
     <span className={styles.likedCount}>{props.likedBy.length}</span>
     <FontAwesomeIcon onClick={() => handleDeleteClick(props._id)} icon={faTrash}  className={styles.icon} style={trashIconStyle} />
     </div>

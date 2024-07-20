@@ -24,7 +24,7 @@ function SignIn() {
     .then(response => response.json())
     .then(data => {
       if (data.result){
-        dispatch(login({token: data.token, username: signInUsername}));
+        dispatch(login({token: data.token, username: data.username, firstname: data.firstname}));
         router.push('/');
       }
     });

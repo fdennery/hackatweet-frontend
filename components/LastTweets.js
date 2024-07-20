@@ -8,33 +8,33 @@ function LastTweets(props) {
 
    
 const user = useSelector((state) => state.user.value)
-const [userData, setUserData] = useState([])
 const router = useRouter()
+const [tweetsData, setTweetsData] = useState([])
 
 
 if (!user.token) {
     router.push('/login');
   }
 
-useEffect(()=> {
-    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${user.username}`)
-    .then (response => response.json())
-    .then(apiData => {
-        setUserData(apiData.user)
-    },  )
-},[user])
 
-const deleteTweet = (tweetId) => {
+
+  // Aimer tweet 
+
+  const likeTweet = (tweetId, creatorName) => {
+    props.likeTweet(tweetId, creatorName)
+  }
+
+//  Suppresion tweet 
+
+  const deleteTweet = (tweetId) => {
     props.deleteTweet(tweetId)
-}
+  }
 
-const likeTweet = (tweetId, creatorId) => {
-    props.likeTweet(tweetId,creatorId)
-}
+
 
 const tweets = props.tweets.map((e,i) => {
-    const isLiked =  e.liked_by.some(u => u.toString()  ===  userData._id.toString())
-    let isDeletable = e.creator._id === userData._id;
+    const isLiked =  e.liked_by.some(u => u.username ===  user.username)
+    let isDeletable = e.creator.username === user.username
     return  <Tweet key={i} _id={e._id} creatorName={e.creator.username}  label={e.label} likedBy={e.liked_by} creationDate={e.creation_date} isLiked={isLiked} isDeletable={isDeletable} deleteTweet={deleteTweet} likeTweet={likeTweet}/>
     
 })

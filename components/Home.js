@@ -13,9 +13,8 @@ function Home() {
 
   const [newTweet, setNewTweet] = useState('')
   const [tweetsData, setTweetsData] = useState([]);
-  const [trendsData, setTrendsData] = useState([]);
+  const [trendsData, setTrendsData] = useState([])
   const user = useSelector((state) => state.user.value)
-  const [userData, setUserData] = useState([])
 
 
   const dispatch = useDispatch()
@@ -26,18 +25,18 @@ function Home() {
 
   let error;
   let disableTweet = true
-  let carCountStyle
+  let carCountStyle;
 
    // Redirection vers login si non loggué
 
 
-    if (!user.token || !userData) {
+    if (!user.token) {
       router.push('/login');
     }
 
 
- // Récupération des tweets
-
+  
+  // Récupération tweet
 
   useEffect(() => {
     fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tweets`)
@@ -47,20 +46,6 @@ function Home() {
       })
   }, [])
 
- // Récupération du user complet
-
-  useEffect(()=> {
-    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${user.username}`)
-    .then (response => response.json())
-    .then(apiData => {
-        setUserData(apiData.user)
-    },  )
-},[])
-
-
-
-
-
 
   // Nouveau tweet 
 
@@ -69,7 +54,7 @@ function Home() {
     fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tweets`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ creator: userData._id, tweet: newTweet })
+      body: JSON.stringify({ creator: user.username, tweet: newTweet })
     }).then(response => response.json())
       .then(apiResponse => {
         if (apiResponse.result) {
@@ -78,12 +63,13 @@ function Home() {
             .then(response => response.json())
             .then(apiData => {
               setTweetsData(apiData.tweets)
-            })
-            fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tweets/trends`)
-            .then(response => response.json())
-             .then(apiData => {
-              setTrendsData(apiData.trends)
+              fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tweets/trends`)
+              .then(response => response.json())
+              .then(apiData => {
+                setTrendsData(apiData.trends)
               })
+            })
+   
 
         } else {
           error = apiResponse.error
@@ -92,60 +78,61 @@ function Home() {
   }
 
 
-  // Aimer tweet 
-
-  const likeTweet = (tweedId, creatorId) => {
-    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tweets/updateLikes`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ tweetId: tweedId, likedBy: userData._id })
-    }).then(response => response.json())
-      .then(apiResponse => {
-        if (apiResponse.result) {
-          fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tweets`)
+    // Aimer tweet 
+  
+    const likeTweet = (tweedId, creatorId) => {
+      fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tweets/updateLikes`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tweetId: tweedId, username: creatorId })
+      }).then(response => response.json())
+        .then(apiResponse => {
+          if (apiResponse.result) {
+            fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tweets`)
+              .then(response => response.json())
+              .then(apiData => {
+                setTweetsData(apiData.tweets)
+              })
+  
+          }
+        })
+  
+    }
+  
+  //  Suppresion tweet 
+  
+    const deleteTweet = (tweetId) => {
+      fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tweets/${tweetId}`, {
+        method: 'DELETE'
+      }).then(response => response.json())
+        .then(apiResponse => {
+          if (apiResponse.result) {
+            fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tweets`)
+              .then(response => response.json())
+              .then(apiData => {
+                setTweetsData(apiData.tweets)
+              })
+           fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tweets/trends`)
             .then(response => response.json())
-            .then(apiData => {
-              setTweetsData(apiData.tweets)
-            })
+             .then(apiData => {
+              setTrendsData(apiData.trends)
+              })
+          }
+        })
+  
+    }
+  
 
-        }
+  // Récupération des Trends 
+
+  useEffect(() => {
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tweets/trends`)
+      .then(response => response.json())
+      .then(apiData => {
+        setTrendsData(apiData.trends)
       })
+  }, [])
 
-  }
-
-//  Suppresion tweet 
-
-  const deleteTweet = (tweetId) => {
-    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tweets/${tweetId}`, {
-      method: 'DELETE'
-    }).then(response => response.json())
-      .then(apiResponse => {
-        if (apiResponse.result) {
-          fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tweets`)
-            .then(response => response.json())
-            .then(apiData => {
-              setTweetsData(apiData.tweets)
-            })
-         fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tweets/trends`)
-          .then(response => response.json())
-           .then(apiData => {
-            setTrendsData(apiData.trends)
-            })
-        }
-      })
-
-  }
-
-
-// Récupération des Trends 
-
- useEffect(() => {
-  fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tweets/trends`)
-    .then(response => response.json())
-    .then(apiData => {
-      setTrendsData(apiData.trends)
-    })
-}, [])
 
 //  Deconexion
 
@@ -178,7 +165,7 @@ if (newTweet.length === 0) {
         </div>
      
         <div className={styles.logoutContainer}>
-          <span>{userData.firstname}</span>
+          <span>{user.firstname}</span>
           <button className={styles.buttonHome} onClick={() => handleLogout()}>Logout</button>
         </div>
       </div>
@@ -191,13 +178,13 @@ if (newTweet.length === 0) {
           <button className={styles.buttonHome} disabled={disableTweet} onClick={() => handleNewTweet()}>Tweet</button>
         </div>
 
-        <LastTweets tweets={tweetsData} user={userData} deleteTweet={deleteTweet} likeTweet={likeTweet} />
+        <LastTweets key={0} tweets={tweetsData} likeTweet={likeTweet} deleteTweet={deleteTweet} />
 
       </div>
 
       <div className={styles.rightContainer}>
         <h3> Trends</h3>
-        <Trends trends={trendsData}/>
+        <Trends key={0} trends={trendsData} />
 
       </div>
 

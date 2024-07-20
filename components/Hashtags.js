@@ -15,8 +15,6 @@ function Hashtags (props) {
     const [tweetsData, setTweetsData] = useState([]);
     const [trendsData, setTrendsData] = useState([]);
     const user = useSelector((state) => state.user.value)
-    const [userData, setUserData] = useState([])
-    const [searchHashtag, setSearchHashtag] = useState(props.hashtag)
   
   
     const dispatch = useDispatch()
@@ -39,23 +37,13 @@ function Hashtags (props) {
       })
   }, [props.hastag])
 
- // Récupération du user complet
-
-  useEffect(()=> {
-    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${user.username}`)
-    .then (response => response.json())
-    .then(apiData => {
-        setUserData(apiData.user)
-    },  )
-},[])
-
   // Aimer tweet 
 
   const likeTweet = (tweedId, creatorId) => {
     fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tweets/updateLikes`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ tweetId: tweedId, likedBy: userData._id })
+      body: JSON.stringify({ tweetId: tweedId, username: creatorId })
     }).then(response => response.json())
       .then(apiResponse => {
         if (apiResponse.result) {
@@ -129,7 +117,7 @@ return (
         </div>
      
         <div className={styles.logoutContainer}>
-          <span>{userData.firstname}</span>
+          <span>{user.firstname}</span>
           <button className={styles.buttonHome} onClick={() => handleLogout()}>Logout</button>
         </div>
       </div>
