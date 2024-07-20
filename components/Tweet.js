@@ -1,5 +1,6 @@
 import styles from '../styles/Tweet.module.css'
 import Image from "next/image"
+import { useRouter } from 'next/router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { useSelector } from 'react-redux'
@@ -9,7 +10,11 @@ import moment from 'moment'
 function Tweet(props) {
 
     const user = useSelector((state) => state.user.value)
-    console.log(props, 'tweets')
+    const router = useRouter()
+
+    if (!user.token ) {
+        router.push('/login');
+      }
 
     let heartIconStyle;
     let trashIconStyle;

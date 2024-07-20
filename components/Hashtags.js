@@ -23,18 +23,16 @@ function Hashtags (props) {
     const router = useRouter();
   
   
-  
   // Redirection vers login si non loggué
   
-useEffect(() => {
-     if (!user.token || userData === undefined) {
-       router.push('/login');
-       }},[router, user, userData]);
+  if (!user.token) {
+    router.push('/login');
+  }
 
  // Récupération des tweets par hashtag
 
  useEffect(() => {
-    fetch(`https://hackatweet-backend-nu-dun.vercel.app/tweets/byHashtag/${props.hashtag}`)
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tweets/byHashtag/${props.hashtag}`)
       .then(response => response.json())
       .then(apiData => {
         setTweetsData(apiData.tweets)
@@ -44,7 +42,7 @@ useEffect(() => {
  // Récupération du user complet
 
   useEffect(()=> {
-    fetch(`https://hackatweet-backend-nu-dun.vercel.app/users/${user.username}`)
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${user.username}`)
     .then (response => response.json())
     .then(apiData => {
         setUserData(apiData.user)
@@ -54,14 +52,14 @@ useEffect(() => {
   // Aimer tweet 
 
   const likeTweet = (tweedId, creatorId) => {
-    fetch('https://hackatweet-backend-nu-dun.vercel.app/tweets/updateLikes', {
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tweets/updateLikes`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ tweetId: tweedId, likedBy: userData._id })
     }).then(response => response.json())
       .then(apiResponse => {
         if (apiResponse.result) {
-          fetch('https://hackatweet-backend-nu-dun.vercel.app/tweets')
+          fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tweets`)
             .then(response => response.json())
             .then(apiData => {
               setTweetsData(apiData.tweets)
@@ -75,17 +73,17 @@ useEffect(() => {
 //  Suppresion tweet 
 
   const deleteTweet = (tweetId) => {
-    fetch(`https://hackatweet-backend-nu-dun.vercel.app/tweets/${tweetId}`, {
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tweets/${tweetId}`, {
       method: 'DELETE'
     }).then(response => response.json())
       .then(apiResponse => {
         if (apiResponse.result) {
-          fetch('https://hackatweet-backend-nu-dun.vercel.app/tweets')
+          fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tweets`)
             .then(response => response.json())
             .then(apiData => {
               setTweetsData(apiData.tweets)
             })
-         fetch('https://hackatweet-backend-nu-dun.vercel.app/tweets/trends')
+         fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tweets/trends`)
           .then(response => response.json())
            .then(apiData => {
             setTrendsData(apiData.trends)
@@ -99,7 +97,7 @@ useEffect(() => {
 // Récupération des Trends 
 
  useEffect(() => {
-  fetch('https://hackatweet-backend-nu-dun.vercel.app/tweets/trends')
+  fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tweets/trends`)
     .then(response => response.json())
     .then(apiData => {
       setTrendsData(apiData.trends)

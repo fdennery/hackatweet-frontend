@@ -11,20 +11,18 @@ const user = useSelector((state) => state.user.value)
 const [userData, setUserData] = useState([])
 const router = useRouter()
 
-useEffect(() => {
-    if (!user.token) {
-      router.push('/login');
-    }
-  }, [user ,router]);
 
+if (!user.token) {
+    router.push('/login');
+  }
 
 useEffect(()=> {
-    fetch(`https://hackatweet-backend-nu-dun.vercel.app/users/${user.username}`)
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${user.username}`)
     .then (response => response.json())
     .then(apiData => {
         setUserData(apiData.user)
     },  )
-},[])
+},[user])
 
 const deleteTweet = (tweetId) => {
     props.deleteTweet(tweetId)

@@ -19,8 +19,9 @@ function Home() {
 
 
   const dispatch = useDispatch()
-
   const router = useRouter();
+
+  console.log('back', process.env.NEXT_PUBLIC_BACKEND_URL)
 
 
   let error;
@@ -29,17 +30,17 @@ function Home() {
 
    // Redirection vers login si non loggué
 
-   useEffect(() => {
-    if (!user.token || userData === undefined) {
+
+    if (!user.token || !userData) {
       router.push('/login');
-      }},[router, user, userData]);
+    }
 
 
  // Récupération des tweets
 
 
   useEffect(() => {
-    fetch('https://hackatweet-backend-nu-dun.vercel.app/tweets')
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tweets`)
       .then(response => response.json())
       .then(apiData => {
         setTweetsData(apiData.tweets)
@@ -49,7 +50,7 @@ function Home() {
  // Récupération du user complet
 
   useEffect(()=> {
-    fetch(`https://hackatweet-backend-nu-dun.vercel.app/users/${user.username}`)
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${user.username}`)
     .then (response => response.json())
     .then(apiData => {
         setUserData(apiData.user)
@@ -65,7 +66,7 @@ function Home() {
 
 
   const handleNewTweet = () => {
-    fetch('https://hackatweet-backend-nu-dun.vercel.app/tweets', {
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tweets`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ creator: userData._id, tweet: newTweet })
@@ -73,12 +74,12 @@ function Home() {
       .then(apiResponse => {
         if (apiResponse.result) {
           setNewTweet('')
-          fetch('https://hackatweet-backend-nu-dun.vercel.app/tweets')
+          fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tweets`)
             .then(response => response.json())
             .then(apiData => {
               setTweetsData(apiData.tweets)
             })
-            fetch('https://hackatweet-backend-nu-dun.vercel.app/tweets/trends')
+            fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tweets/trends`)
             .then(response => response.json())
              .then(apiData => {
               setTrendsData(apiData.trends)
@@ -94,14 +95,14 @@ function Home() {
   // Aimer tweet 
 
   const likeTweet = (tweedId, creatorId) => {
-    fetch('https://hackatweet-backend-nu-dun.vercel.app/tweets/updateLikes', {
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tweets/updateLikes`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ tweetId: tweedId, likedBy: userData._id })
     }).then(response => response.json())
       .then(apiResponse => {
         if (apiResponse.result) {
-          fetch('https://hackatweet-backend-nu-dun.vercel.app/tweets')
+          fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tweets`)
             .then(response => response.json())
             .then(apiData => {
               setTweetsData(apiData.tweets)
@@ -115,17 +116,17 @@ function Home() {
 //  Suppresion tweet 
 
   const deleteTweet = (tweetId) => {
-    fetch(`https://hackatweet-backend-nu-dun.vercel.app/tweets/${tweetId}`, {
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tweets/${tweetId}`, {
       method: 'DELETE'
     }).then(response => response.json())
       .then(apiResponse => {
         if (apiResponse.result) {
-          fetch('https://hackatweet-backend-nu-dun.vercel.app/tweets')
+          fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tweets`)
             .then(response => response.json())
             .then(apiData => {
               setTweetsData(apiData.tweets)
             })
-         fetch('https://hackatweet-backend-nu-dun.vercel.app/tweets/trends')
+         fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tweets/trends`)
           .then(response => response.json())
            .then(apiData => {
             setTrendsData(apiData.trends)
@@ -139,7 +140,7 @@ function Home() {
 // Récupération des Trends 
 
  useEffect(() => {
-  fetch('https://hackatweet-backend-nu-dun.vercel.app/tweets/trends')
+  fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tweets/trends`)
     .then(response => response.json())
     .then(apiData => {
       setTrendsData(apiData.trends)
@@ -190,7 +191,7 @@ if (newTweet.length === 0) {
           <button className={styles.buttonHome} disabled={disableTweet} onClick={() => handleNewTweet()}>Tweet</button>
         </div>
 
-        <LastTweets tweets={tweetsData} deleteTweet={deleteTweet} likeTweet={likeTweet} />
+        <LastTweets tweets={tweetsData} user={userData} deleteTweet={deleteTweet} likeTweet={likeTweet} />
 
       </div>
 
